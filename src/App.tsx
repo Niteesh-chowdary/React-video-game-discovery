@@ -1,30 +1,55 @@
-import { Grid, GridItem, Show } from "@chakra-ui/react"
-import NavBar from "./components/NavBar"
-import GameGrid from "./components/GameGrid"
-import GenreList from "./components/GenreList"
-import { useState } from "react"
-import {Genre} from "./hooks/useGenres"
-import PlatformSelector from "./components/PlatformSelector"
-import { Platform } from "./hooks/useGames"
+import { Grid, GridItem, HStack, Show } from "@chakra-ui/react";
+import NavBar from "./components/NavBar";
+import GameGrid from "./components/GameGrid";
+import GenreList from "./components/GenreList";
+import { useState } from "react";
+import { Genre } from "./hooks/useGenres";
+import PlatformSelector from "./components/PlatformSelector";
+import { Platform } from "./hooks/useGames";
+import SortSelector, { SortSelectorProp } from "./components/sortSelector";
 
-function App() {
-  const [seletctedGenre,setSelectedGenre] = useState<Genre | null>(null)
-  const [selectedPlatform,setSelectedPlatform] = useState<Platform |null>(null)
-  return (
-    <Grid templateAreas={{
-      base: `"nav" "main"`,
-      lg: `"nav nav" "aside main"`,
-    }}
-    templateColumns={{
-      base:'1fr',
-      lg:'200px 1fr'
-    }}
-    >
-      <GridItem area='nav'><NavBar></NavBar></GridItem>
-      <Show above='lg'><GridItem area='aside' paddingX='5px'><GenreList selectedGenre={seletctedGenre} onSelect={(genre)=>setSelectedGenre(genre)}/></GridItem></Show>
-      <GridItem area='main'><PlatformSelector selectedPlatform={selectedPlatform} onSelectPlatform={(platform)=>setSelectedPlatform(platform)}/><GameGrid selectedPlatform={selectedPlatform} selectedGenre={seletctedGenre}></GameGrid></GridItem>
-    </Grid>
-  )
+export interface GameQuery {
+  genre: Genre | null;
+  platform: Platform | null;
+  selector:string
 }
 
-export default App
+function App() {
+  const [game, setGame] = useState<GameQuery>({} as GameQuery);
+  return (
+    <Grid
+      templateAreas={{
+        base: `"nav" "main"`,
+        lg: `"nav nav" "aside main"`,
+      }}
+      templateColumns={{
+        base: "1fr",
+        lg: "200px 1fr",
+      }}
+    >
+      <GridItem area="nav">
+        <NavBar></NavBar>
+      </GridItem>
+      <Show above="lg">
+        <GridItem area="aside" paddingX="5px">
+          <GenreList
+            selectedGenre={game.genre}
+            onSelect={(genre) => setGame({ ...game, genre:genre })}
+          />
+        </GridItem>
+      </Show>
+      <GridItem area="main">
+        <HStack marginBottom={5} spacing={5} paddingLeft={10}>
+          <PlatformSelector
+            selectedPlatform={game.platform}
+            onSelectPlatform={(platform) => setGame({ ...game, platform:platform })}
+          />
+          <SortSelector sortValue={game.selector} onSelect={(value)=>setGame({...game,selector:value})} />
+        </HStack>
+        <GameGrid gameQuery={game}></GameGrid>
+      </GridItem>
+    </Grid>
+  );
+}
+
+export default App;
