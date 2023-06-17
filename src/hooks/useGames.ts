@@ -21,7 +21,7 @@ const useGames = (
 ) => {
   return useData<Game>(
     "/games",
-    { params: { genres: gameQuery.genre?.id, parent_platforms: gameQuery.platform?.id,ordering:gameQuery.selector } },
+    { params: { genres: gameQuery.genre?.id, parent_platforms: gameQuery.platform?.id,ordering:gameQuery.selector,search:gameQuery.searchText } },
     [gameQuery]
   );
 };
