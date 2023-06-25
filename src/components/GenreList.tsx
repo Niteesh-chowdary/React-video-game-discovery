@@ -3,11 +3,11 @@ import useGenres, { Genre } from "../hooks/useGenres";
 import GetCroppedImages from "../services/GetCroppedImages";
 
 interface GenreListProp {
-  onSelect: (genre: Genre) => void;
-  selectedGenre: Genre | null;
+  onSelect: (genreId: number) => void;
+  selectedGenreId?: number;
 }
 
-function GenreList({ onSelect, selectedGenre }: GenreListProp) {
+function GenreList({ onSelect, selectedGenreId }: GenreListProp) {
   const { data } = useGenres();
   return(
   <>
@@ -25,10 +25,10 @@ function GenreList({ onSelect, selectedGenre }: GenreListProp) {
             <Button
               whiteSpace={"normal"}
               textAlign={"left"}
-              fontWeight={genre.id === selectedGenre?.id ? "bold" : "normal"}
+              fontWeight={genre.id === selectedGenreId? "bold" : "normal"}
               fontSize="lg"
               variant="link"
-              onClick={() => onSelect(genre)}
+              onClick={() => onSelect(genre.id)}
             >
               {genre.name}
             </Button>
