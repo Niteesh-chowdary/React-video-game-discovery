@@ -1,13 +1,9 @@
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { BsChevronDown } from "react-icons/bs";
-
-export interface SortSelectorProp{
-    onSelect:(value:string)=>void
-    sortValue:string
-}
+import useGameQueryStore from "../store";
 
 
-function SortSelector({onSelect,sortValue}:SortSelectorProp){
+function SortSelector(){
     const sortOrders =[
         {value:'',label:'Relevance'},
         {value:'-added',label:'Date added'},
@@ -17,11 +13,15 @@ function SortSelector({onSelect,sortValue}:SortSelectorProp){
         {value:'-rating',label:'Average rating'},
 
     ]
-    const order = sortOrders.find(order=>order.value == sortValue)
+
+    const selectOrderValue = useGameQueryStore(s=>s.gameQuery.selector)
+    const setSortOrder = useGameQueryStore(s=>s.setSortOrder);
+
+    const order = sortOrders.find(order=>order.value == selectOrderValue)
     return <Menu>
         <MenuButton as={Button} rightIcon={<BsChevronDown/>}>Order by: {order?.label || 'Relevance'}</MenuButton>
         <MenuList>
-            {sortOrders.map(order=><MenuItem key={order.value} value={order.value} onClick={()=>onSelect(order.value)}>{order.label}</MenuItem>)}
+            {sortOrders.map(order=><MenuItem key={order.value} value={order.value} onClick={()=>setSortOrder(order.value)}>{order.label}</MenuItem>)}
         </MenuList>
     </Menu>
 }
