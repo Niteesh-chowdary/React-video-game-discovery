@@ -11,7 +11,7 @@ interface GameCardProps {
 
 function GameCard({ game }: GameCardProps) {
   return (
-    <Card width="250px" borderRadius={10} overflow="hidden">
+    <Card>
       <Image src={GetCroppedImages(game.background_image)} />
       <CardBody>
         <Link to={"/games/" + game.slug}>
