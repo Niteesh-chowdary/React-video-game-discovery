@@ -17,8 +17,6 @@ function SortSelector() {
   const currentorder = sortOrders.find(
     (order) => order.value == selectOrderValue
   );
-  console.log(selectOrderValue);
-  console.log(currentorder);
   return (
     <Menu>
       <MenuButton as={Button} rightIcon={<BsChevronDown />}>
